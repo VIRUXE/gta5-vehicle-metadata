@@ -35,6 +35,15 @@ for vehicle in data:
     if "realname" in vehicle: vehicle['realname'] = vehicle['realname'].replace(';', ', ').replace('/', ', ')
     vehicles[model] = vehicle
 
+# Get images from table "vehicles_images". Use model as key
+cursor.execute("SELECT model, url FROM vehicles_images")
+images = cursor.fetchall()
+for image in images:
+    model = image[0]
+    url = image[1]
+    if model in vehicles:
+        vehicles[model]['image'] = url
+
 # Save to JSON file with utf-8 encoding
 with open('vehicles.json', 'w', encoding='utf-8') as f:
     json.dump(vehicles, f, ensure_ascii=False, indent=4)
